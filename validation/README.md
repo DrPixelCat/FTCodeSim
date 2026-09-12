@@ -15,7 +15,7 @@ integration, lateral constraints, geometry validation and drivetrain mode switch
 ApexPathing currently depends on `org.codeblooded:Simulator:SNAPSHOT-9cb1d09`.
 It cannot directly substitute this checkout without adapting the test harness.
 `apex-tank-harness.patch` records the adaptations used for headless validation
-against the local checkout on 2026-09-12. It applies to a copy of
+against the local checkout on 2026-09-12. Apply with `git apply --unidiff-zero`; it targets a copy of
 `TeamCode/src/test/java`, not production robot code. The source checkout used
 includes the tank tests and follower changes present in the shared workspace.
 

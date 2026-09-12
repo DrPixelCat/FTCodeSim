@@ -1,40 +1,19 @@
 --- a/org/firstinspires/ftc/teamcode/sim/AccelerationFeedforwardPhaseSimulationTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/AccelerationFeedforwardPhaseSimulationTest.java
-@@ -6,7 +6,7 @@
- import com.qualcomm.robotcore.hardware.Gamepad;
- 
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
+@@ -9 +9 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.firstinspires.ftc.teamcode.apexpathing.Constants;
- import org.junit.Test;
- 
 --- a/org/firstinspires/ftc/teamcode/sim/ApexSimulation.java
 +++ b/org/firstinspires/ftc/teamcode/sim/ApexSimulation.java
-@@ -7,8 +7,8 @@
- import org.codeblooded.ftcodesim.hardware.drivetrain.SimulatedMecanum;
- import org.codeblooded.ftcodesim.hardware.drivetrain.SimulatedTank;
- import org.codeblooded.ftcodesim.input.DefaultKeybinds;
+@@ -10,2 +10,2 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 -import org.codeblooded.ftcodesim.physics.RobotGeometry;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.RobotGeometry;
- import org.codeblooded.ftcodesim.simulator.FTCodeSim;
- import org.codeblooded.ftcodesim.simulator.FTCodeSimTelemetryInstaller;
- import org.codeblooded.ftcodesim.ascope.ApexAdvantageScopeLayout;
-@@ -98,7 +98,7 @@
-         config.maxAcceleration = 150;
-         config.maxVelocity = 75;
-         config.naturalDeceleration = 40;
+@@ -101 +101 @@
 -        config.strafeEfficiency = 0.80;
 +
-         config.robotGeometry = new RobotGeometry(12, 18, 2, 0);
- 
-         SimulatedDrivetrain drivetrain = new SimulatedMecanum(config);
-@@ -122,17 +122,17 @@
-         // Apex uses positive turn for left/CCW. SimulatedTank's wheel-slot convention is the
-         // opposite, and SimMotor ignores SDK motor direction, so mirror the physical slots while
-         // retaining the production tank motor mix.
+@@ -125,4 +125,4 @@
 -        config.frontLeftMotorName = FRONT_RIGHT_MOTOR;
 -        config.frontRightMotorName = FRONT_LEFT_MOTOR;
 -        config.backLeftMotorName = BACK_RIGHT_MOTOR;
@@ -43,147 +22,67 @@
 +        config.frontRightMotorName = FRONT_RIGHT_MOTOR;
 +        config.backLeftMotorName = BACK_LEFT_MOTOR;
 +        config.backRightMotorName = BACK_RIGHT_MOTOR;
-         config.trackWidth = 14.0;
-         config.wheelRadius = 2.0;
-         config.staticVelocityRegion = 0.05;
-         config.staticFriction = 0.1;
-         config.maxAcceleration = 150;
-         config.maxVelocity = 75;
+@@ -135 +135 @@
 -        config.naturalDeceleration = 40;
 +        config.naturalDeceleration = 0;
-         config.robotGeometry = new RobotGeometry(12, 18, 2, 0);
- 
-         SimulatedDrivetrain drivetrain = new SimulatedTank(config);
-@@ -150,6 +150,9 @@
-                             com.qualcomm.robotcore.hardware.DcMotorEx.class, name);
-             double[] coefficients = {1.0 / (kA * config.wheelRadius * config.nominalVoltage),
-                     0.0, kV / kA, kS / (kA * config.wheelRadius)};
+@@ -152,0 +153,3 @@
 +            motor.config.motorModel = new org.codeblooded.fit.MotorModel(
 +                    (v,d,b) -> d*b, (v,d,b) -> 0, (v,d,b) -> -v,
 +                    (v,d,b) -> -Math.signum(v));
-             motor.config.modelCoefficients = coefficients;
-             motor.config.zeroPowerBrakeCoefficients = coefficients.clone();
-         }
 --- a/org/firstinspires/ftc/teamcode/sim/ApexSimulationTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/ApexSimulationTest.java
-@@ -10,7 +10,7 @@
- import com.qualcomm.robotcore.hardware.Gamepad;
- import com.qualcomm.robotcore.hardware.IMU;
- 
+@@ -13 +13 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
- import org.codeblooded.ftcodesim.input.Keybinds;
- import org.codeblooded.ftcodesim.input.Keys;
 --- a/org/firstinspires/ftc/teamcode/sim/AutoTestSimulationTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/AutoTestSimulationTest.java
-@@ -9,7 +9,7 @@
- import com.qualcomm.robotcore.hardware.Gamepad;
- 
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
+@@ -12 +12 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.firstinspires.ftc.teamcode.apexpathing.AutoTest;
- import org.junit.Test;
- import org.knowm.xchart.BitmapEncoder;
 --- a/org/firstinspires/ftc/teamcode/sim/DualActuatedPathFollowingSimulationTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/DualActuatedPathFollowingSimulationTest.java
-@@ -9,7 +9,7 @@
- import com.qualcomm.robotcore.hardware.Servo;
- 
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
+@@ -12 +12 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.json.JSONObject;
- import org.junit.Test;
- 
 --- a/org/firstinspires/ftc/teamcode/sim/FeedforwardPhaseSimulationTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/FeedforwardPhaseSimulationTest.java
-@@ -8,7 +8,7 @@
- import com.qualcomm.robotcore.hardware.DcMotorEx;
- import com.qualcomm.robotcore.hardware.Gamepad;
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
+@@ -11 +11 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.firstinspires.ftc.teamcode.apexpathing.Constants;
- import org.junit.Test;
- import java.nio.file.Files;
 --- a/org/firstinspires/ftc/teamcode/sim/FollowerTunerTelemetryTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/FollowerTunerTelemetryTest.java
-@@ -7,7 +7,7 @@
- import com.qualcomm.robotcore.hardware.Gamepad;
- 
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
+@@ -10 +10 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.firstinspires.ftc.teamcode.apexpathing.FollowerTuner;
- import org.firstinspires.ftc.teamcode.apexpathing.Constants;
- import org.junit.Test;
 --- a/org/firstinspires/ftc/teamcode/sim/LocalizationTunerWorkflowTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/LocalizationTunerWorkflowTest.java
-@@ -12,7 +12,7 @@
- import com.qualcomm.robotcore.hardware.Servo;
- 
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
+@@ -15 +15 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
- import org.firstinspires.ftc.teamcode.apexpathing.LocalizationTuner;
- import org.json.JSONObject;
 --- a/org/firstinspires/ftc/teamcode/sim/SimApexPinpoint.java
 +++ b/org/firstinspires/ftc/teamcode/sim/SimApexPinpoint.java
-@@ -2,7 +2,7 @@
- 
- import com.qualcomm.robotcore.hardware.I2cDeviceSynchSimple;
- 
+@@ -5 +5 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.codeblooded.ftcodesim.hardware.devices.SimHardwareDevice;
- import org.codeblooded.ftcodesim.hardware.drivetrain.SimulatedDrivetrain;
- 
 --- a/org/firstinspires/ftc/teamcode/sim/TankAutoAccuracySimulationTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/TankAutoAccuracySimulationTest.java
-@@ -9,7 +9,7 @@
- import com.qualcomm.robotcore.hardware.Gamepad;
- 
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
+@@ -12 +12 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.firstinspires.ftc.teamcode.apexpathing.AutoTest;
- import org.junit.Test;
- 
 --- a/org/firstinspires/ftc/teamcode/sim/TankPathFollowingSimulationTest.java
 +++ b/org/firstinspires/ftc/teamcode/sim/TankPathFollowingSimulationTest.java
-@@ -9,7 +9,7 @@
- 
- import org.codeblooded.ftcodesim.hardware.devices.SimMotor;
- import org.codeblooded.ftcodesim.hardware.drivetrain.SimulatedTank;
+@@ -12 +12 @@
 -import org.codeblooded.ftcodesim.physics.MotionVector;
 +import org.codeblooded.ftcodesim.ascope.boundaries.MotionVector;
- import org.codeblooded.ftcodesim.simulator.OpModeRegister;
- import org.codeblooded.ftcodesim.simulator.SimConfig;
- import org.json.JSONObject;
 --- a/org/codeblooded/ftcodesim/ascope/ApexAdvantageScopeLayout.java
 +++ b/org/codeblooded/ftcodesim/ascope/ApexAdvantageScopeLayout.java
-@@ -5,7 +5,7 @@
- import com.fasterxml.jackson.databind.node.ArrayNode;
- import com.fasterxml.jackson.databind.node.ObjectNode;
- 
+@@ -8 +8 @@
 -import org.codeblooded.ftcodesim.physics.SeasonField;
 +import org.codeblooded.ftcodesim.ascope.SeasonField;
- 
- /** Adds Apex's active path to FTCodeSim's dedicated AdvantageScope field tabs. */
- public final class ApexAdvantageScopeLayout {
-@@ -20,10 +20,8 @@
- 
-     /** Updates the layout created by FTCodeSim. Has no effect when AdvantageScope is unavailable. */
-     public static void install() {
+@@ -23,4 +23,2 @@
 -        AscopeViewEditor editor = new AscopeViewEditor(SeasonField.DECODE);
 -        if (configure(editor.root, editor.mapper)) {
 -            editor.save();
 -        }
 +        // Headless validation: no UI layout installation.
 +
-     }
- 
-     static boolean configure(ObjectNode root, ObjectMapper mapper) {
